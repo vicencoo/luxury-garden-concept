@@ -1,0 +1,353 @@
+@import "tailwindcss";
+
+/*
+  Luxury Garden — design tokens, taken from the brand logo
+  forest   #0F241B  deep evergreen of the logo: hero, dark sections, primary text
+  pine     #18352A  cards on dark
+  cream    #F6F4EE  page ground
+  mist     #ECEFE7  soft green-grey panels and image placeholders
+  muted    #5D6B62  secondary text
+  brass    #C9A96E  the warm accent: primary buttons, highlights
+*/
+
+@theme {
+  --color-forest: #0f241b;
+  --color-pine: #18352a;
+  --color-moss: #2c4a3c;
+  --color-cream: #f6f4ee;
+  --color-mist: #eceee7;
+  --color-muted: #5d6b62;
+  --color-brass: #c9a96e;
+  --color-brass-light: #e4cf9f;
+  --color-whatsapp: #25d366;
+
+  --text-hero: clamp(2.5rem, 1.5rem + 3.4vw, 4.4rem);
+  --text-hero--line-height: 1.02;
+  --text-h2: clamp(2rem, 1.4rem + 2.2vw, 3.4rem);
+  --text-h2--line-height: 1.08;
+
+  --ease-luxe: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@theme inline {
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-serif: var(--font-instrument), Georgia, serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--color-forest);
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-forest);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+::selection {
+  background: var(--color-brass);
+  color: var(--color-forest);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 3px;
+}
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    height: 3.25rem;
+    padding: 0 1.6rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition:
+      background-color 0.3s,
+      color 0.3s,
+      border-color 0.3s,
+      transform 0.3s var(--ease-luxe),
+      box-shadow 0.3s;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+  .btn-sm {
+    height: 2.6rem;
+    padding: 0 1.15rem;
+    font-size: 0.875rem;
+  }
+  .btn-primary {
+    background: var(--color-brass);
+    color: var(--color-forest);
+    box-shadow: 0 10px 30px -10px rgb(201 169 110 / 0.7);
+  }
+  .btn-primary:hover {
+    background: var(--color-brass-light);
+  }
+  .btn-dark {
+    background: var(--color-forest);
+    color: #fff;
+  }
+  .btn-dark:hover {
+    background: var(--color-moss);
+  }
+  .btn-glass {
+    background: rgb(255 255 255 / 0.08);
+    color: #fff;
+    border: 1px solid rgb(255 255 255 / 0.22);
+    backdrop-filter: blur(8px);
+  }
+  .btn-glass:hover {
+    background: rgb(255 255 255 / 0.16);
+  }
+  .btn-outline {
+    border: 1.5px solid rgb(15 36 27 / 0.18);
+    color: var(--color-forest);
+    background: #fff;
+  }
+  .btn-outline:hover {
+    border-color: var(--color-forest);
+  }
+
+  /* Round icon that sits at the end of a button or card */
+  .arrow-dot {
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    margin-right: -0.9rem;
+    background: var(--color-forest);
+    color: #fff;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-moss);
+  }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.settle {
+  animation: settle 0.9s var(--ease-luxe) both;
+}
+
+/* Scroll reveal, toggled by <Reveal> */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.9s var(--ease-luxe),
+    transform 0.9s var(--ease-luxe);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Film grain over dark surfaces, so flat green reads like velvet, not a screen */
+.grain {
+  isolation: isolate;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Brushed-gold text for the one accent word in a heading */
+.gold-text {
+  background: linear-gradient(100deg, #b8924f 0%, #f0dcaa 38%, #c9a96e 62%, #e9d3a0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Gold button with a light that sweeps across on hover */
+.btn-gold {
+  position: relative;
+  overflow: hidden;
+  color: var(--color-forest);
+  background: linear-gradient(120deg, #c9a96e, #ead6a6 50%, #c9a96e);
+  box-shadow:
+    0 14px 34px -12px rgb(201 169 110 / 0.75),
+    inset 0 1px 0 rgb(255 255 255 / 0.5);
+}
+.btn-gold::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%) skewX(-20deg);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.55), transparent);
+  transition: transform 0.9s var(--ease-luxe);
+}
+.btn-gold:hover::before {
+  transform: translateX(120%) skewX(-20deg);
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 45s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes ken-burns {
+  from {
+    transform: scale(1.14);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.ken-burns {
+  animation: ken-burns 3.2s var(--ease-luxe) both;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spin-slow {
+  animation: spin 24s linear infinite;
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Opening curtain (<Intro>): mark fades in, gold line draws, curtain lifts */
+@keyframes intro-lift {
+  to {
+    transform: translateY(-100%);
+    border-radius: 0 0 50% 50% / 0 0 12% 12%;
+    visibility: hidden;
+  }
+}
+@keyframes intro-fade {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes intro-mark {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes intro-line {
+  from {
+    transform: scaleX(0);
+  }
+}
+.intro {
+  pointer-events: none;
+  animation: intro-lift 0.9s var(--ease-luxe) 0.75s forwards;
+}
+.intro-mark {
+  animation: intro-mark 0.6s var(--ease-luxe) both;
+}
+.intro-line {
+  animation: intro-line 0.6s var(--ease-luxe) 0.15s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .intro {
+    animation: intro-fade 0.3s ease 0.4s forwards;
+  }
+  .settle,
+  .ken-burns,
+  .spin-slow,
+  .float {
+    animation: none;
+  }
+  /* The ribbon keeps moving, just slowly, so the page never looks frozen */
+  .marquee-track {
+    animation-duration: 120s;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .btn:hover {
+    transform: none;
+  }
+}
+
+/* Hero motion waits for the opening curtain to lift */
+#top .settle {
+  animation-delay: 0.7s;
+}
+#top .ken-burns {
+  animation-delay: 0.55s;
+}
